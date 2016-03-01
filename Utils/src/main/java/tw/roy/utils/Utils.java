@@ -1,17 +1,28 @@
 package tw.roy.utils;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.NotificationCompat;
 
-/**
- * Created by Roy on 2015/12/24.
- */
+import java.util.regex.Pattern;
+
 public class Utils {
+
+
+    public static boolean isNumeric(String str) {
+        Pattern pattern = Pattern.compile("[0-9]+");
+        return pattern.matcher(str).matches();
+    }
 
     public static String getDeviceID(Context context) {
 
@@ -26,10 +37,7 @@ public class Utils {
     public static boolean isConnected(Context context) {
         ConnectivityManager CM = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = CM.getActiveNetworkInfo();
-        if (info != null) {
-            return info.isConnectedOrConnecting();
-        }
-        return false;
+        return info != null && info.isConnectedOrConnecting();
     }
 
     public static boolean isEmptyString(String string) {
@@ -38,6 +46,39 @@ public class Utils {
             return true;
         }
         return false;
+    }
+
+    public static void notification(Context context, int id, int icon, String title,
+                                    String message, Intent intent) {
+
+        try {
+            NotificationManager notifiM = (NotificationManager) context
+                    .getSystemService(Service.NOTIFICATION_SERVICE);
+
+            PendingIntent penIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+            NotificationCompat.Builder builder =
+                    new NotificationCompat.Builder(context)
+                            .setDefaults(Notification.DEFAULT_ALL)
+                            .setSmallIcon(icon)
+                            .setTicker(title)
+                            .setContentTitle(title)
+                            .setContentText(message)
+                            .setContentIntent(penIntent)
+                            .setAutoCancel(true);
+
+//            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                builder.setColor(context.getResources().getColor(R.color.orange));
+//            }
+
+            Notification notifi = builder.build();
+            notifiM.notify(id, notifi);
+
+        } catch (SecurityException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static class mProgressDialog {
@@ -53,9 +94,9 @@ public class Utils {
         }
 
         /**
-         * @param context
-         * @param title
-         * @param message
+         * @param context context
+         * @param title   title
+         * @param message message
          * @param style   ProgressDialog.STYLE_HORIZONTAL 直條
          *                ProgressDialog.STYLE_SPINNER 圓圈
          */
