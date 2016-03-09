@@ -36,15 +36,15 @@ public class BLE {
     private boolean mScanning;
 
     private Map<String, DeviceData> devicesData;
-    private long lastFindTime = -1; //³Ì«á¤@¦¸·j¨ì¸Ë¸mªº®É¶¡
+    private long lastFindTime = -1; //æœ€å¾Œä¸€æ¬¡æœåˆ°è£ç½®çš„æ™‚é–“
 
     private List<OnBeaconSearchListener> onBeaconSearchListenerList;
 
     /**
-     * °Ñ¼Æ³]©w
+     * åƒæ•¸è¨­å®š
      */
     private float scanPeriodSec = 2f; // second
-    private int stopScanMinWithNotFound = -1; // minute (-1 = ¤£°±¤î) ¦h¤[®É¶¡¨S·j¨ì¸Ë¸m°±¤îªA°È
+    private int stopScanMinWithNotFound = -1; // minute (-1 = ä¸åœæ­¢) å¤šä¹…æ™‚é–“æ²’æœåˆ°è£ç½®åœæ­¢æœå‹™
 
 
 
@@ -390,7 +390,7 @@ public class BLE {
                 devicesData.put(key, deviceData);
 
             }
-            //¤w·j¹L¸Ë¸m
+            //å·²æœéè£ç½®
             else {
 
                 /**

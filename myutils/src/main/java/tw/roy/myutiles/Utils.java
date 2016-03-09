@@ -98,8 +98,8 @@ public class Utils {
          * @param context context
          * @param title   title
          * @param message message
-         * @param style   ProgressDialog.STYLE_HORIZONTAL ™Ω±¯
-         *                ProgressDialog.STYLE_SPINNER ∂Í∞È
+         * @param style   ProgressDialog.STYLE_HORIZONTAL Áõ¥Ê¢ù
+         *                ProgressDialog.STYLE_SPINNER ÂúìÂúà
          */
         public static void showWithProgress(Context context, CharSequence title, CharSequence message, int style, int max, boolean cancelable) {
             if (progressDialog != null && progressDialog.isShowing()) {
