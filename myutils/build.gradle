@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/lukboy117/Roy'
     gitUrl = 'https://github.com/lukboy117/Roy.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.1'
 
     developerId = 'lukboy117'
     developerName = 'Roy'
@@ -28,6 +28,8 @@ ext {
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
+
+    compileOptions.encoding = 'x-windows-950'
 
     defaultConfig {
         minSdkVersion 16

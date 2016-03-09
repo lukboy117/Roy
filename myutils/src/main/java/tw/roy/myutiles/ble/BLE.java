@@ -36,15 +36,16 @@ public class BLE {
     private boolean mScanning;
 
     private Map<String, DeviceData> devicesData;
-    private long lastFindTime = -1; //æœ€å¾Œä¸€æ¬¡æœåˆ°è£ç½®çš„æ™‚é–“
+    private long lastFindTime = -1; //³Ì«á¤@¦¸·j¨ì¸Ë¸mªº®É¶¡
 
     private List<OnBeaconSearchListener> onBeaconSearchListenerList;
 
     /**
-     * åƒæ•¸è¨­å®š
+     * °Ñ¼Æ³]©w
      */
     private float scanPeriodSec = 2f; // second
-    private int stopScanMinWithNotFound = -1; // minute (-1 = ä¸åœæ­¢) å¤šä¹…æ™‚é–“æ²’æœåˆ°è£ç½®åœæ­¢æœå‹™
+    private int stopScanMinWithNotFound = -1; // minute (-1 = ¤£°±¤î) ¦h¤[®É¶¡¨S·j¨ì¸Ë¸m°±¤îªA°È
+
 
 
     public interface OnBeaconSearchListener {
@@ -66,9 +67,13 @@ public class BLE {
 
     public static BLE getInstance(Context context, float scanPeriodSec, int stopScanMinWithNotFound) {
         BLE ble = new BLE();
-        ble.init(context, scanPeriodSec, stopScanMinWithNotFound);
 
-        return new BLE();
+        if (ble.init(context, scanPeriodSec, stopScanMinWithNotFound)) {
+
+            return ble;
+        } else {
+            return null;
+        }
     }
 
     public boolean isSupport() {
@@ -89,7 +94,7 @@ public class BLE {
     public void setScanPeriodSec(float scanPeriodSec) {
         this.scanPeriodSec = scanPeriodSec;
 
-        if(mScanning){
+        if (mScanning) {
             startScan(UUID);
         }
     }
@@ -97,7 +102,7 @@ public class BLE {
     public void setStopScanMinWithNotFound(int stopScanMinWithNotFound) {
         this.stopScanMinWithNotFound = stopScanMinWithNotFound;
 
-        if(mScanning){
+        if (mScanning) {
             startScan(UUID);
         }
     }
@@ -206,7 +211,7 @@ public class BLE {
 
     //Todo private
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private void init(Context context, float scanPeriodSec, int stopScanMinWithNotFound) {
+    private boolean init(Context context, float scanPeriodSec, int stopScanMinWithNotFound) {
 
         if (context == null) {
             throw new NullPointerException("The context is null");
@@ -299,6 +304,12 @@ public class BLE {
 
             devicesData = new HashMap<>();
         }
+
+        if (mBluetoothAdapter != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -379,7 +390,7 @@ public class BLE {
                 devicesData.put(key, deviceData);
 
             }
-            //å·²æœéè£ç½®
+            //¤w·j¹L¸Ë¸m
             else {
 
                 /**
