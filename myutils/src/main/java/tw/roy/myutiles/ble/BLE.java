@@ -2,7 +2,6 @@ package tw.roy.myutiles.ble;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanCallback;
@@ -11,6 +10,7 @@ import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 
 import java.text.DecimalFormat;
@@ -28,6 +28,7 @@ public class BLE {
     private final String TAG = "BLE";
     private String UUID;
     private Context mContext;
+    private Handler handler = new Handler();
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothAdapter.LeScanCallback mLeScanCallback;
     private ScanCallback mScanCallback;
@@ -36,15 +37,15 @@ public class BLE {
     private boolean mScanning;
 
     private Map<String, DeviceData> devicesData;
-    private long lastFindTime = -1; //æœ€å¾Œä¸€æ¬¡æœåˆ°è£ç½®çš„æ™‚é–“
+    private long lastFindTime = -1; //³Ì«á¤@¦¸·j¨ì¸Ë¸mªº®É¶¡
 
     private List<OnBeaconSearchListener> onBeaconSearchListenerList;
 
     /**
-     * åƒæ•¸è¨­å®š
+     * °Ñ¼Æ³]©w
      */
     private float scanPeriodSec = 2f; // second
-    private int stopScanMinWithNotFound = -1; // minute (-1 = ä¸åœæ­¢) å¤šä¹…æ™‚é–“æ²’æœåˆ°è£ç½®åœæ­¢æœå‹™
+    private int stopScanMinWithNotFound = -1; // minute (-1 = ¤£°±¤î) ¦h¤[®É¶¡¨S·j¨ì¸Ë¸m°±¤îªA°È
 
 
 
@@ -175,7 +176,19 @@ public class BLE {
 
                         Log.d(TAG, "beaconList size= " + beaconList.size());
 
-                        ((Activity) mContext).runOnUiThread(new Runnable() {
+//                        ((Activity) mContext).runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (onBeaconSearchListenerList != null) {
+//                                    for (OnBeaconSearchListener listener : onBeaconSearchListenerList) {
+//
+//                                        listener.onBeaconSearch(beaconList);
+//                                    }
+//                                }
+//                            }
+//                        });
+
+                        handler.post(new Runnable() {
                             @Override
                             public void run() {
                                 if (onBeaconSearchListenerList != null) {
@@ -390,7 +403,7 @@ public class BLE {
                 devicesData.put(key, deviceData);
 
             }
-            //å·²æœéè£ç½®
+            //¤w·j¹L¸Ë¸m
             else {
 
                 /**

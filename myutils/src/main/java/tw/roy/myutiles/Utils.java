@@ -14,6 +14,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.view.View;
+import android.widget.Toast;
 
 import java.util.regex.Pattern;
 
@@ -82,26 +84,34 @@ public class Utils {
         }
     }
 
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
     public static class mProgressDialog {
 
         private static ProgressDialog progressDialog;
 
-
-        public static void show(Context context, CharSequence title, CharSequence message, boolean cancelable, DialogInterface.OnCancelListener cancelListener) {
+        public static void show(Context context, CharSequence title, CharSequence message, boolean cancelable, DialogInterface.OnCancelListener onCancelListener) {
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            progressDialog = android.app.ProgressDialog.show(context, title, message, true, cancelable, cancelListener);
+            progressDialog = android.app.ProgressDialog.show(context, title, message, true, cancelable, onCancelListener);
         }
 
         /**
          * @param context context
          * @param title   title
          * @param message message
-         * @param style   ProgressDialog.STYLE_HORIZONTAL Áõ¥Ê¢ù
-         *                ProgressDialog.STYLE_SPINNER ÂúìÂúà
+         * @param style   ProgressDialog.STYLE_HORIZONTAL ™Ω±¯
+         *                ProgressDialog.STYLE_SPINNER ∂Í∞È
          */
-        public static void showWithProgress(Context context, CharSequence title, CharSequence message, int style, int max, boolean cancelable) {
+        public static void showWithProgress(Context context, CharSequence title, CharSequence message, int style, int max, boolean cancelable, DialogInterface.OnCancelListener onCancelListener) {
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
@@ -112,6 +122,7 @@ public class Utils {
             progressDialog.setProgressStyle(style);
             progressDialog.setMax(max);
             progressDialog.setCancelable(cancelable);
+            progressDialog.setOnCancelListener(onCancelListener);
             progressDialog.show();
         }
 
@@ -138,14 +149,30 @@ public class Utils {
         }
     }
 
+    public static class mToast {
 
-    /* Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
+        private static Toast toast;
+
+        public static void show(Context context, String text, int duration) {
+
+            if (toast != null) {
+                toast.cancel();
+            }
+            toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
-        return false;
+
+        public static void show(Context context, View view, int duration) {
+
+            if (toast != null) {
+                toast.cancel();
+            }
+            toast = new Toast(context);
+            toast.setView(view);
+            toast.setDuration(duration);
+            toast.show();
+        }
     }
+
 
 }
