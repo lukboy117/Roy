@@ -8,6 +8,9 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -85,12 +88,33 @@ public class Utils {
     }
 
     /* Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
+    public static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
         }
         return false;
+    }
+
+    public static boolean isGpsEnable(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    public static int getTargetSdkVersion(Context context) {
+
+        int version = 0;
+        PackageManager pm = context.getPackageManager();
+        try {
+            ApplicationInfo applicationInfo = pm.getApplicationInfo(context.getPackageName(), 0);
+            if (applicationInfo != null) {
+                version = applicationInfo.targetSdkVersion;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return version;
     }
 
     public static class mProgressDialog {

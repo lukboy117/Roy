@@ -48,9 +48,12 @@ public class BLE {
     private int stopScanMinWithNotFound = -1; // minute (-1 = 不停止) 多久時間沒搜到裝置停止服務
 
 
-
     public interface OnBeaconSearchListener {
         void onBeaconSearch(List<Beacon> beaconList);
+    }
+
+    public interface OpenBluetoothCallBack {
+        void openBluetoothCallBack();
     }
 
     //Todo public
@@ -106,6 +109,10 @@ public class BLE {
         if (mScanning) {
             startScan(UUID);
         }
+    }
+
+    public BluetoothAdapter getBluetoothAdapter() {
+        return mBluetoothAdapter;
     }
 
     public void stopScan() {
@@ -201,13 +208,18 @@ public class BLE {
                         });
 
                     } catch (Exception e) {
-                        Log.e(TAG, "Calculate AvgRSSI ERROR");
+                        Log.e(TAG, "Calculate Beacon Data Error");
                         e.printStackTrace();
                     }
 
                     devicesData.clear();
 
                     scanLeDevice(true);
+
+                }else{
+
+                    Log.d(TAG, "BluetoothAdapter is unable");
+
                 }
             }
         }, 0, (long) (scanPeriodSec * 1000));
