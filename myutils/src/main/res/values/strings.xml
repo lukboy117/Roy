@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">My Utiles</string>
+
+    <string name="open_bt_dialog_title">訊息</string>
+    <string name="open_bt_dialog_message">定位功能需開啟定位服務 , 是否前往開啟服務？</string>
+    <string name="open_bt_dialog_yes">yes</string>
+    <string name="open_bt_dialog_no">no</string>
+
 </resources>

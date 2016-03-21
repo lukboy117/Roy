@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import tw.roy.myutiles.R;
 import tw.roy.myutiles.Utils;
 
 
@@ -79,6 +80,8 @@ public class BleFragment extends Fragment {
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBtIntent, MY_BLUETOOTH_ENABLE_REQUEST_ID);
 
+                    return;
+
                 } else {
                     mBluetoothAdapter.enable();
 
@@ -121,16 +124,24 @@ public class BleFragment extends Fragment {
 
                 if (!Utils.isGpsEnable(getActivity())) {
                     AlertDialog.Builder ad = new AlertDialog.Builder(getActivity());
-                    ad.setTitle("訊息");
-                    ad.setMessage("定位功能需開啟定位服務 , 是否前往開啟服務？");
-                    ad.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    ad.setTitle(R.string.open_bt_dialog_title);
+                    ad.setMessage(R.string.open_bt_dialog_message);
+                    ad.setPositiveButton(R.string.open_bt_dialog_yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             checkGPS = true;
                             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         }
                     });
-                    ad.setNegativeButton("no", null);
+                    ad.setNegativeButton(R.string.open_bt_dialog_no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            if (requestPermissionsResult != null) {
+                                requestPermissionsResult.userDenied();
+                            }
+                        }
+                    });
                     ad.setCancelable(false);
                     ad.show();
                 }

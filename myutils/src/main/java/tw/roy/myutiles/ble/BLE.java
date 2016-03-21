@@ -92,7 +92,16 @@ public class BLE {
         if (onBeaconSearchListenerList == null) {
             onBeaconSearchListenerList = new ArrayList<>();
         }
-        onBeaconSearchListenerList.add(onBeaconSearchListener);
+        if (!onBeaconSearchListenerList.contains(onBeaconSearchListener))
+            onBeaconSearchListenerList.add(onBeaconSearchListener);
+
+    }
+
+    public void removeOnBeaconSearchListener(OnBeaconSearchListener onBeaconSearchListener) {
+        if (onBeaconSearchListenerList != null
+                && onBeaconSearchListenerList.contains(onBeaconSearchListener))
+            onBeaconSearchListenerList.remove(onBeaconSearchListener);
+
     }
 
     public void setScanPeriodSec(float scanPeriodSec) {
@@ -216,7 +225,7 @@ public class BLE {
 
                     scanLeDevice(true);
 
-                }else{
+                } else {
 
                     Log.d(TAG, "BluetoothAdapter is unable");
 
