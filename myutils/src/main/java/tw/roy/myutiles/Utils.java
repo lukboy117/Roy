@@ -132,8 +132,8 @@ public class Utils {
          * @param context context
          * @param title   title
          * @param message message
-         * @param style   ProgressDialog.STYLE_HORIZONTAL ª½±ø
-         *                ProgressDialog.STYLE_SPINNER ¶ê°é
+         * @param style   ProgressDialog.STYLE_HORIZONTAL
+         *                ProgressDialog.STYLE_SPINNER
          */
         public static void showWithProgress(Context context, CharSequence title, CharSequence message, int style, int max, boolean cancelable, DialogInterface.OnCancelListener onCancelListener) {
             if (progressDialog != null && progressDialog.isShowing()) {
@@ -178,7 +178,6 @@ public class Utils {
         private static Toast toast;
 
         public static void show(Context context, String text, int duration) {
-
             if (toast != null) {
                 toast.cancel();
             }

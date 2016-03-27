@@ -37,15 +37,15 @@ public class BLE {
     private boolean mScanning;
 
     private Map<String, DeviceData> devicesData;
-    private long lastFindTime = -1; //最後一次搜到裝置的時間
+    private long lastFindTime = -1; //The last find device time
 
     private List<OnBeaconSearchListener> onBeaconSearchListenerList;
 
     /**
-     * 參數設定
+     * Parameter
      */
     private float scanPeriodSec = 2f; // second
-    private int stopScanMinWithNotFound = -1; // minute (-1 = 不停止) 多久時間沒搜到裝置停止服務
+    private int stopScanMinWithNotFound = -1; // minute (-1 = non-stop)
 
 
     public interface OnBeaconSearchListener {
@@ -424,7 +424,6 @@ public class BLE {
                 devicesData.put(key, deviceData);
 
             }
-            //已搜過裝置
             else {
 
                 /**
