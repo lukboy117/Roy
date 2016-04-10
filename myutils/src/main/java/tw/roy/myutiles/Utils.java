@@ -125,17 +125,19 @@ public class Utils {
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            progressDialog = android.app.ProgressDialog.show(context, title, message, true, cancelable, onCancelListener);
+
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setTitle(title);
+            progressDialog.setMessage(message);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCancelable(cancelable);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setOnCancelListener(onCancelListener);
+            progressDialog.show();
         }
 
-        /**
-         * @param context context
-         * @param title   title
-         * @param message message
-         * @param style   ProgressDialog.STYLE_HORIZONTAL
-         *                ProgressDialog.STYLE_SPINNER
-         */
-        public static void showWithProgress(Context context, CharSequence title, CharSequence message, int style, int max, boolean cancelable, DialogInterface.OnCancelListener onCancelListener) {
+        public static void showWithProgress(Context context, CharSequence title, CharSequence message, int max, boolean cancelable, DialogInterface.OnCancelListener onCancelListener) {
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
@@ -143,9 +145,10 @@ public class Utils {
             progressDialog.setTitle(title);
             progressDialog.setMessage(message);
             progressDialog.setIndeterminate(true);
-            progressDialog.setProgressStyle(style);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setMax(max);
             progressDialog.setCancelable(cancelable);
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setOnCancelListener(onCancelListener);
             progressDialog.show();
         }
